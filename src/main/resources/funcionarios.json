@@ -1,61 +1,61 @@
 [
     {
         "nome":"Maria",
-        "dataNascimento":"18/10/2000",
+        "dataNascimento":"2000-10-18",
         "salario":"2009.44",
         "funcao":"Operador"
     },
     {
         "nome":"João",
-        "dataNascimento":"12/05/1990",
+        "dataNascimento":"1990-05-12",
         "salario":"2284.38",
         "funcao":"Operador"
     },
     {
         "nome":"Caio",
-        "dataNascimento":"02/05/1961",
+        "dataNascimento":"1961-05-02",
         "salario":"9836.14",
         "funcao":"Coordenador"
     },
     {
         "nome":"Miguel",
-        "dataNascimento":"14/10/1988",
+        "dataNascimento":"1988-10-14",
         "salario":"19119.88",
         "funcao":"Diretor"
     },
     {
         "nome":"Alice",
-        "dataNascimento":"05/01/1995",
+        "dataNascimento":"1995-01-05",
         "salario":"2234.68",
         "funcao":"Recepcionista"
     },
     {
         "nome":"Heitor",
-        "dataNascimento":"19/11/1999",
+        "dataNascimento":"1999-11-19",
         "salario":"1582.72",
         "funcao":"Operador"
     },
     {
         "nome":"Arthur",
-        "dataNascimento":"31/03/1993",
+        "dataNascimento":"1993-03-31",
         "salario":"4071.84",
         "funcao":"Contador"
     },
     {
         "nome":"Laura",
-        "dataNascimento":"08/07/1994",
+        "dataNascimento":"1994-07-08",
         "salario":"3017.45",
         "funcao":"Gerente"
     },
     {
         "nome":"Heloísa",
-        "dataNascimento":"24/05/2003",
+        "dataNascimento":"2003-05-24",
         "salario":"1606.85",
         "funcao":"Eletricista"
     },
     {
         "nome":"Helena",
-        "dataNascimento":"02/09/1996",
+        "dataNascimento":"1996-09-02",
         "salario":"2799.93",
         "funcao":"Gerente"
     }
