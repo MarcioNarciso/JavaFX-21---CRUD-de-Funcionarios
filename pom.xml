@@ -55,6 +55,24 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>br.dev.marcionarciso.Principal</mainClass>
+                    
+                    <!-- 
+                    	Configurações adicionais para a criação da runtime image 
+                    -->
+                    <!-- Remove as informaçẽos de debug. -->
+                    <stripDebug>true</stripDebug>
+                    <!-- Define o nível de comprenssão dos recursos. -->
+                    <compress>2</compress>
+                    <!-- Remove o diretório "includes" da runtime image. -->
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <!-- Remove o diretório "man" da runtime image. -->
+                    <noManPages>true</noManPages>
+                    <!-- Adiciona um script de inicialização com o nome especificado. -->
+                    <launcher>crud-funcionarios-launcher</launcher>
+                    <!-- O nome da pasta com a runtime image resultante. -->
+                    <jlinkImageName>executavel</jlinkImageName>
+                    <!-- Cria um "zip" da runtime image resultante. -->
+                    <jlinkZipName>executavel-zip</jlinkZipName>
                 </configuration>
             </plugin>
         </plugins>
