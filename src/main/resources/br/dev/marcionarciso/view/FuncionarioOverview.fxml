@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.dev.marcionarciso.view.FuncionarioOverviewController">
+<AnchorPane prefHeight="400.0" prefWidth="800.0" styleClass="background" stylesheets="@MainTheme.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.dev.marcionarciso.view.FuncionarioOverviewController">
    <children>
       <SplitPane dividerPositions="0.7330827067669173" layoutX="284.0" layoutY="61.0" prefHeight="300.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -32,9 +32,9 @@
                   </TableView>
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="210.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="210.0" styleClass="background">
                <children>
-                  <Label layoutX="7.0" layoutY="6.0" prefHeight="16.0" prefWidth="201.0" text="Ações" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                  <Label layoutX="7.0" layoutY="6.0" prefHeight="16.0" prefWidth="201.0" styleClass="label-header" text="Ações" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
                   <GridPane layoutX="6.0" layoutY="45.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="30.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -94,12 +94,12 @@
                   </GridPane>
                   <HBox layoutX="13.0" layoutY="260.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="61.0" text="Novo">
+                        <Button mnemonicParsing="false" onAction="#handleNovoFuncionario" prefHeight="24.0" prefWidth="61.0" text="Novo">
                            <HBox.margin>
                               <Insets left="5.0" right="5.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="65.0" text="Editar">
+                        <Button mnemonicParsing="false" onAction="#handleEditarFuncionario" prefHeight="24.0" prefWidth="65.0" text="Editar">
                            <HBox.margin>
                               <Insets right="5.0" />
                            </HBox.margin>

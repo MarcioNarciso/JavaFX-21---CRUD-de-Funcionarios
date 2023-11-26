@@ -2,6 +2,7 @@ package br.dev.marcionarciso.view;
 
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 import br.dev.marcionarciso.Principal;
 import br.dev.marcionarciso.model.Funcionario;
@@ -40,11 +41,6 @@ public class FuncionarioOverviewController {
 	@FXML
 	private void initialize() {
 		initTabelaFuncionarios();
-		
-		// Reseta a seleção
-		selecionarFuncionario(null);
-		
-//		initListeners();
 	}
 	
 	private void initTabelaFuncionarios() {
@@ -56,27 +52,24 @@ public class FuncionarioOverviewController {
 		
 		this.colunaDataNascimento.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(DateUtils.formatarPadraoBrasileiro(cellData.getValue().getDataNascimento())));
 		
-		this.colunaSalario.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(BigDecimalUtils.formatarEmMoeda(cellData.getValue().getSalario())));
+		this.colunaSalario.setCellValueFactory(cellData -> new ReadOnlyStringWrapper("R$ "+BigDecimalUtils.formatarEmMoeda(cellData.getValue().getSalario())));
 		this.colunaFuncao.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getFuncao()));
 	}
-	
-	/*
-	private void initListeners() {
-		//Detecta a mudança na seleção de funcionários na tabela.
-		this.tabelaFuncionarios.getSelectionModel().selectedItemProperty()
-			.addListener((observable, oldValue, newValue) -> selecionarFuncionario(newValue));
-	}
-	*/
-	
-	/**
-	 * Define a ação dos botões "Excluir" e "Editar" com base em um Funcionario.
-	 * @param funcionario
-	 */
-	private void selecionarFuncionario(Funcionario funcionario) {
 		
+	public void setAppPrincipal(Principal principal) {
+		this.appPrincipal = principal;
+		
+		// Adiciona os dados da ObservableList à tabela de funcionários
+		this.tabelaFuncionarios.setItems(principal.getDadosFuncionarios());
 	}
 	
-	
+	public void refreshTabelaFuncionarios() {
+		this.tabelaFuncionarios.refresh();
+	}
+		
+	/**
+	 * Executado quando o usuário clicar no botão "Excluir".
+	 */
 	@FXML
 	private void handleExclusaoFuncionario() {
 		int selectedIndex = this.tabelaFuncionarios.getSelectionModel().getSelectedIndex();
@@ -86,18 +79,44 @@ public class FuncionarioOverviewController {
 			return;
 		}
 		
-		Alert alert = new Alert(AlertType.WARNING);
-		alert.setTitle("Atenção!");
-		alert.setHeaderText(null);
-		alert.setContentText("Por favor, selecione um funcionário.");
-		alert.show();
+		this.appPrincipal.showAlert("Atenção!", 
+									"Por favor, selecione um funcionário.", 
+									AlertType.WARNING).show();
 		
 	}
 	
-	public void setAppPrincipal(Principal principal) {
-		this.appPrincipal = principal;
+	/**
+	 * Executado quando o usuário clicar no botão "Novo".
+	 * Abre uma janela com o formulário para criar um novo funcionário.
+	 */
+	@FXML
+	private void handleNovoFuncionario() {
+		Funcionario f = new Funcionario();
 		
-		// Adiciona os dados da ObservableList à tabela de funcionários
-		this.tabelaFuncionarios.setItems(principal.getDadosFuncionarios());
+		Boolean okClicado = this.appPrincipal.showFuncionarioFormDialog(f);
+		
+		if (okClicado) {
+			this.appPrincipal.getDadosFuncionarios().add(f);
+		}
 	}
+	
+	/**
+	 * Executado quando o usuário clicar no botão "Editar".
+	 * Abre uma janela com o formulário preenchido com os dados do funcionário
+	 * para a edição.
+	 */
+	@FXML
+	private void handleEditarFuncionario() {
+		Funcionario funcionarioSelecionado = this.tabelaFuncionarios.getSelectionModel().getSelectedItem();
+		
+		if (Objects.isNull(funcionarioSelecionado)) {
+			this.appPrincipal.showAlert("Atenção!", 
+										"Por favor, selecione um funcionário.", 
+										AlertType.WARNING).show();
+			return;
+		}
+		
+		this.appPrincipal.showFuncionarioFormDialog(funcionarioSelecionado);
+	}
+
 }

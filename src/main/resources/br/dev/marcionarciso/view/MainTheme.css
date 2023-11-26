@@ -1,0 +1,136 @@
+* {
+	-fx-base-color: #1d1d1d;
+	-fx-base-color-alt: transparent;
+	-fx-base-border-color: #e2e2e2;
+	-fx-font-color: #fff;
+	-fx-base-font-family: "Ubuntu";
+	-fx-base-font-family-light: "Ubuntu mono";
+	-fx-text-fill: -fx-font-color;
+}
+
+.background {
+	-fx-background-color: -fx-base-color;
+}
+
+.label {
+	-fx-font-size: 11pt;
+	-fx-font-family: -fx-base-font-family;
+	-fx-opacity: 0.6;
+} 
+
+.label-bright {
+	-fx-font-size: 11pt;
+	-fx-font-family: -fx-base-font-family;
+	-fx-opacity: 1;
+}
+
+.label-header {
+	-fx-font-size: 20px;
+	-fx-font-family: -fx-base-font-family-light;
+	-fx-opacity: 1;
+}
+
+.table-view {
+	-fx-base: -fx-base-color;
+	-fx-control-inner-background: -fx-base-color;
+	-fx-background-color: -fx-base-color;
+	-fx-table-cell-border-color: -fx-base-color-alt;
+	-fx-table-header-border-color: -fx-base-color-alt;
+	-fx-padding: 5;
+}
+
+.table-view .column-header-background {
+	-fx-background-color: -fx-base-color-alt;
+}
+
+.table-view .column-header,
+.table-view .filter {
+	-fx-size: 35;
+	-fx-border-width: 0 0 1 0;
+	-fx-background-color: -fx-base-color-alt;
+	-fx-border-color:
+		transparent
+		transparent
+		derive(-fx-base, 80%)
+		transparent;
+	-fx-border-insets: 0 10 1 0;
+}
+
+.table-view .column-header .label {
+	-fx-font-size: 14px;
+	-fx-font-family: -fx-base-font-family-light;
+	-fx-text-fill: -fx-font-color;
+	-fx-alignment: center-left;
+	-fx-opacity: 1;
+}
+
+.table-view:focused .table-row-cell:filled:focused:selected {
+	-fx-background-color: -fx-focus-color;
+}
+
+.split-pane:horizontal > .split-pane-divider {
+	-fx-border-color: 
+		-fx-base-color-alt 
+		-fx-base-color 
+		-fx-base-color-alt 
+		-fx-base-color;
+	-fx-background-color: -fx-base-color-alt, derive(-fx-base-color, 80%);
+}
+
+.split-pane {
+	-fx-padding: 1 0 0 0;
+}
+
+.text-field {
+	-fx-font-size: 12pt;
+	-fx-font-family: -fx-base-font-family;
+	-fx-background-color: -fx-base-color;
+	-fx-border-color:
+		transparent
+		transparent
+		derive(-fx-base, 80%)
+		transparent;
+}
+
+.button {
+	-fx-border-color: -fx-base-color-alt;
+	-fx-border-width: 0;
+	-fx-background-radius: 0;
+	-fx-background-color: derive(-fx-base-color, 20%);
+	-fx-font-family: -fx-base-font-family-light;
+	-fx-font-size: 12px;
+	-fx-text-fill: derive(-fx-font-color, 80%);
+	-fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.button:hover {
+	-fx-background-color: derive(-fx-base-color, 10%);
+}
+
+.button:pressed, .button:default:hover:pressed {
+	-fx-background-color: -fx-font-color;
+	-fx-text-fill: -fx-base-color;
+}
+
+.button:focused {
+	-fx-border-color: -fx-font-color, -fx-font-color;
+	-fx-border-width: 1, 1;
+	-fx-border-style: solid, segments(1, 1);
+	-fx-border-radius: 0, 0;
+	-fx-border-insets: 1 1 1 1, 0;
+}
+
+.button:disabled, .button:default:disabled {
+	-fx-opacity: 0.4;
+	-fx-background-color: -fx-base-color;
+	-fx-text-fill: -fx-font-color;
+}
+
+.button:default {
+	-fx-background-color: -fx-focus-color;
+	-fx-text-fill: -fx-font-color;
+}
+
+.button:default:hover {
+	-fx-background-color: derive(-fx-focus-color, 30%);
+}

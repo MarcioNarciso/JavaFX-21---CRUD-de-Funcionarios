@@ -23,7 +23,7 @@ public abstract class DateUtils {
 	 * @param dataString
 	 * @return
 	 */
-	public static LocalDate converterData(String dataString) {
+	public static LocalDate converterDeString(String dataString) {
 		try {
 			return FORMATADOR_BRASILEIRO.parse(dataString, LocalDate::from);
 		} catch (Exception e) {
@@ -37,6 +37,6 @@ public abstract class DateUtils {
 	 * @return
 	 */
 	public static Boolean isDataValida(String data) {
-		return nonNull(converterData(data));
+		return nonNull(converterDeString(data));
 	}
 }
