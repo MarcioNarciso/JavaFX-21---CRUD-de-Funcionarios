@@ -9,6 +9,11 @@ public abstract class Pessoa {
 	
 	public Pessoa() {}
 	
+	public Pessoa(String nome) {
+		super();
+		this.nome = nome;
+	}
+	
 	public Pessoa(String nome, LocalDate dataNascimento) {
 		super();
 		this.nome = nome;

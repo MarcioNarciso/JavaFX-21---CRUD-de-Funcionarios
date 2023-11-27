@@ -13,18 +13,19 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="400.0" prefWidth="800.0" styleClass="background" stylesheets="@MainTheme.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.dev.marcionarciso.view.FuncionarioOverviewController">
+<AnchorPane prefHeight="400.0" prefWidth="900.0" styleClass="background" stylesheets="@MainTheme.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.dev.marcionarciso.view.FuncionarioOverviewController">
    <children>
-      <SplitPane dividerPositions="0.7330827067669173" layoutX="284.0" layoutY="61.0" prefHeight="300.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SplitPane dividerPositions="0.7711111111111111" layoutX="284.0" layoutY="61.0" prefHeight="300.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <TableView fx:id="tabelaFuncionarios" prefHeight="398.0" prefWidth="558.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="tabelaFuncionarios" prefHeight="399.0" prefWidth="673.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
                       <TableColumn fx:id="colunaNome" prefWidth="75.0" text="Nome" />
                       <TableColumn fx:id="colunaDataNascimento" prefWidth="76.0" text="Data Nascimento" />
                         <TableColumn fx:id="colunaSalario" prefWidth="74.0" text="Salário" />
                         <TableColumn fx:id="colunaFuncao" prefWidth="75.0" text="Função" />
+                        <TableColumn fx:id="colunaSalariosMinimos" prefWidth="75.0" text="Salários Mín." />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -32,7 +33,7 @@
                   </TableView>
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="210.0" styleClass="background">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="399.0" prefWidth="207.0" styleClass="background">
                <children>
                   <Label layoutX="7.0" layoutY="6.0" prefHeight="16.0" prefWidth="201.0" styleClass="label-header" text="Ações" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
                   <GridPane layoutX="6.0" layoutY="45.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="30.0">
@@ -49,7 +50,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="215.0" text="Remover João">
+                        <Button mnemonicParsing="false" onAction="#handleExclusaoFuncionarioJoao" prefHeight="24.0" prefWidth="215.0" text="Remover João">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -57,12 +58,12 @@
                               <Tooltip text="Exclui o funcionário &quot;João&quot;." />
                            </tooltip>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="219.0" text="Aumentar 10%" GridPane.rowIndex="1">
+                        <Button mnemonicParsing="false" onAction="#handleAumentarSalario10Porcento" prefHeight="24.0" prefWidth="219.0" text="Aumentar 10%" GridPane.rowIndex="1">
                            <tooltip>
                               <Tooltip text="Aumenta o salário dos funcionários em 10%." />
                            </tooltip>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="293.0" text="Agrupar por Função" GridPane.rowIndex="2">
+                        <Button mnemonicParsing="false" onAction="#handleExibirFuncionariosPorFuncao" prefHeight="24.0" prefWidth="293.0" text="Exibir por Função" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -70,12 +71,12 @@
                               <Tooltip text="Exibe os funcionários agrupados por função." />
                            </tooltip>
                         </Button>
-                        <Button accessibleText="Blá blá" mnemonicParsing="false" prefHeight="24.0" prefWidth="265.0" text="Aniversariantes" GridPane.rowIndex="3">
+                        <Button accessibleText="Blá blá" mnemonicParsing="false" onAction="#handleExibirAniversariantes" prefHeight="24.0" prefWidth="265.0" text="Exibir Aniversariantes" GridPane.rowIndex="3">
                            <tooltip>
                               <Tooltip text="Exibe os funcionários que fazem aniversário no mês 10 e 12." />
                            </tooltip>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="210.0" text="Maior Idade" GridPane.rowIndex="4">
+                        <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="210.0" text="Exibir Maior Idade" GridPane.rowIndex="4">
                            <tooltip>
                               <Tooltip text="Exibe o funcionário com a maior idade." />
                            </tooltip>
@@ -83,11 +84,6 @@
                         <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="206.0" text="Ordem Alfabética" GridPane.rowIndex="5">
                            <tooltip>
                               <Tooltip text="Exibe os funcionários em ordem alfabética." />
-                           </tooltip>
-                        </Button>
-                        <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="204.0" text="Salários Mínimos" GridPane.rowIndex="6">
-                           <tooltip>
-                              <Tooltip text="Exibe quantos salários mínimos cada funcionário recebe." />
                            </tooltip>
                         </Button>
                      </children>

@@ -30,7 +30,8 @@
 	-fx-opacity: 1;
 }
 
-.table-view {
+.table-view,
+.tree-table-view {
 	-fx-base: -fx-base-color;
 	-fx-control-inner-background: -fx-base-color;
 	-fx-background-color: -fx-base-color;
@@ -39,12 +40,15 @@
 	-fx-padding: 5;
 }
 
-.table-view .column-header-background {
+.table-view .column-header-background,
+.tree-table-view .column-header-background {
 	-fx-background-color: -fx-base-color-alt;
 }
 
 .table-view .column-header,
-.table-view .filter {
+.table-view .filter,
+.tree-table-view .column-header,
+.tree-table-view .filter {
 	-fx-size: 35;
 	-fx-border-width: 0 0 1 0;
 	-fx-background-color: -fx-base-color-alt;
@@ -56,7 +60,8 @@
 	-fx-border-insets: 0 10 1 0;
 }
 
-.table-view .column-header .label {
+.table-view .column-header .label,
+.tree-table-view .column-header .label {
 	-fx-font-size: 14px;
 	-fx-font-family: -fx-base-font-family-light;
 	-fx-text-fill: -fx-font-color;
@@ -64,7 +69,8 @@
 	-fx-opacity: 1;
 }
 
-.table-view:focused .table-row-cell:filled:focused:selected {
+.table-view:focused .table-row-cell:filled:focused:selected,
+.tree-table-view:focused .table-row-cell:filled:focused:selected {
 	-fx-background-color: -fx-focus-color;
 }
 

@@ -14,13 +14,8 @@ import static br.dev.marcionarciso.utils.StringUtils.isEmpty;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class FuncionarioFormDialogController {
-	
-	/**
-	 * Class principal da aplicação.
-	 */
-	private Principal appPrincipal;
-	
+public class FuncionarioFormDialogController extends BaseDialogController {
+		
 	@FXML
 	private TextField campoNome;
 	@FXML
@@ -30,31 +25,23 @@ public class FuncionarioFormDialogController {
 	@FXML
 	private TextField campoFuncao;
 	
-	/*
-	 * Janela do formulário
-	 */
-	private Stage dialogStage;
-	/*
+	/**
 	 * Funcionário editado no formulário
 	 */
 	private Funcionario funcionario;
-	/*
+	
+	/**
 	 * Se o usuário clicar no botão "Ok", é definido para true.
 	 */
 	private Boolean okClicado = false;
-	
 	
 	@FXML
 	private void initialize() {
 		
 	}
-
-	public void setDialogStage(Stage dialogStage) {
-		this.dialogStage = dialogStage;
-	}
-	
+		
 	/**
-	 * Define o funcionário que será editado.
+	 * Recebe o funcionário que será editado.
 	 * @param funcionario
 	 */
 	public void setFuncionario(Funcionario funcionario) {
@@ -62,7 +49,7 @@ public class FuncionarioFormDialogController {
 		
 		this.campoNome.setText(funcionario.getNome());
 		this.campoDataNascimento.setText(DateUtils.formatarPadraoBrasileiro(funcionario.getDataNascimento()));
-		this.campoDataNascimento.setPromptText(DateUtils.PADRAO_DATA_BRASIL);
+		this.campoDataNascimento.setPromptText("DD/MM/AAAA"); // Define um "placeholder" no campo de texto
 		this.campoSalario.setText(BigDecimalUtils.formatarEmMoeda(funcionario.getSalario()));
 		this.campoFuncao.setText(funcionario.getFuncao());
 	}
@@ -70,15 +57,7 @@ public class FuncionarioFormDialogController {
 	public Boolean isOkClicado() {
 		return this.okClicado;
 	}
-	
-	/**
-	 * Executado quando o usuário clicar no botão "Cancelar".
-	 */
-	@FXML
-	private void handleCancelar() {
-		this.dialogStage.close();
-	}
-	
+		
 	/**
 	 * Executado quando o usuário clicar no botão "Ok".
 	 */
@@ -95,6 +74,11 @@ public class FuncionarioFormDialogController {
 		}
 	}
 	
+	/**
+	 * Função que realiza a validação do formulário de funcionários.
+	 * @return true se todos os campos não tiverem erro e false caso algum campo 
+	 * tenha erro.
+	 */
 	private Boolean isEntradaValida() {
 		String mensagemDeErro = "";
 		
@@ -128,14 +112,12 @@ public class FuncionarioFormDialogController {
 			return true;
 		}
 		
+		// Exibe uma modal de alerta com a mensagem de erro.
 		this.appPrincipal.showAlert("Campos inválidos", 
 									mensagemDeErro, 
-									AlertType.ERROR).showAndWait();
+									AlertType.ERROR);
 		
 		return false;
 	}
 
-	public void setAppPrincipal(Principal principal) {
-		this.appPrincipal = principal;
-	}
 }

@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 
 public abstract class DateUtils {
 	
-	public static final String PADRAO_DATA_BRASIL = "dd/MM/yyyy";
+	private static final String PADRAO_DATA_BRASIL = "dd/MM/yyyy";
 	private static final DateTimeFormatter FORMATADOR_BRASILEIRO = DateTimeFormatter.ofPattern(PADRAO_DATA_BRASIL); 
 	
 	public static String formatarPadraoBrasileiro(LocalDate data) {

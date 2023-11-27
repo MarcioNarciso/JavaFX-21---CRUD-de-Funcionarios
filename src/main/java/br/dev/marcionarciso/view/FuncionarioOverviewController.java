@@ -1,29 +1,29 @@
 package br.dev.marcionarciso.view;
 
-import java.math.BigDecimal;
-import java.time.format.DateTimeFormatter;
+import java.text.DecimalFormat;
 import java.util.Objects;
 
 import br.dev.marcionarciso.Principal;
 import br.dev.marcionarciso.model.Funcionario;
 import br.dev.marcionarciso.utils.BigDecimalUtils;
 import br.dev.marcionarciso.utils.DateUtils;
-import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
-public class FuncionarioOverviewController {
+public class FuncionarioOverviewController extends BaseDialogController{
+	
+	private static final Double VALOR_SALARIO_MINIMO = 1212D;
 	
 	/**
-	 * Classe principal da aplicação.
+	 * O vínculo da TableView com sua respectiva ObservableList é feito pelo
+	 * método setAppPrincipal.
+	 * Os registros removidos da TableView também são removidos da ObservableList
+	 * e vice-versa.
 	 */
-	private Principal appPrincipal;
-
 	@FXML
 	private TableView<Funcionario> tabelaFuncionarios;
 	@FXML
@@ -34,6 +34,12 @@ public class FuncionarioOverviewController {
 	private TableColumn<Funcionario, String> colunaSalario;
 	@FXML
 	private TableColumn<Funcionario, String> colunaFuncao;
+	/**
+	 * Coluna que exibirá a quantidade de salários mínimos que o funcionário recebe.
+	 */
+	@FXML
+	private TableColumn<Funcionario, String> colunaSalariosMinimos;
+	
 	
 	/**
 	 * Método executado após o carregamento do arquivo FXML.
@@ -48,21 +54,31 @@ public class FuncionarioOverviewController {
 		 * Define qual propriedade de Funcionario está em qual coluna. 
 		 */
 		this.colunaNome.setCellValueFactory(cellData ->  new ReadOnlyStringWrapper(cellData.getValue().getNome()));
-		
-		
 		this.colunaDataNascimento.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(DateUtils.formatarPadraoBrasileiro(cellData.getValue().getDataNascimento())));
-		
 		this.colunaSalario.setCellValueFactory(cellData -> new ReadOnlyStringWrapper("R$ "+BigDecimalUtils.formatarEmMoeda(cellData.getValue().getSalario())));
 		this.colunaFuncao.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getFuncao()));
+		this.colunaSalariosMinimos.setCellValueFactory(cellData -> {
+			Double salario = cellData.getValue().getSalario().doubleValue();
+			Double quantidadeSalariosMinimos = salario / VALOR_SALARIO_MINIMO;
+			
+			return new ReadOnlyStringWrapper(new DecimalFormat("0.0").format(quantidadeSalariosMinimos));
+		});
 	}
 		
 	public void setAppPrincipal(Principal principal) {
 		this.appPrincipal = principal;
-		
-		// Adiciona os dados da ObservableList à tabela de funcionários
-		this.tabelaFuncionarios.setItems(principal.getDadosFuncionarios());
+	}
+
+	/*
+	 * Adiciona os dados da ObservableList à tabela de funcionários
+	 */
+	public void setFuncionarios(ObservableList<Funcionario> funcionarios) {
+		this.tabelaFuncionarios.setItems(funcionarios);
 	}
 	
+	/**
+	 * Atualiza a visualização da TableView de funcionários.
+	 */
 	public void refreshTabelaFuncionarios() {
 		this.tabelaFuncionarios.refresh();
 	}
@@ -75,13 +91,15 @@ public class FuncionarioOverviewController {
 		int selectedIndex = this.tabelaFuncionarios.getSelectionModel().getSelectedIndex();
 		
 		if (selectedIndex >= 0) {
+			// Remove o funcionário da ObservableList
 			this.tabelaFuncionarios.getItems().remove(selectedIndex);
+			
 			return;
 		}
 		
 		this.appPrincipal.showAlert("Atenção!", 
 									"Por favor, selecione um funcionário.", 
-									AlertType.WARNING).show();
+									AlertType.WARNING);
 		
 	}
 	
@@ -96,6 +114,7 @@ public class FuncionarioOverviewController {
 		Boolean okClicado = this.appPrincipal.showFuncionarioFormDialog(f);
 		
 		if (okClicado) {
+			// Adiciona o funcionário à ObservableList
 			this.appPrincipal.getDadosFuncionarios().add(f);
 		}
 	}
@@ -112,11 +131,54 @@ public class FuncionarioOverviewController {
 		if (Objects.isNull(funcionarioSelecionado)) {
 			this.appPrincipal.showAlert("Atenção!", 
 										"Por favor, selecione um funcionário.", 
-										AlertType.WARNING).show();
+										AlertType.WARNING);
 			return;
 		}
 		
 		this.appPrincipal.showFuncionarioFormDialog(funcionarioSelecionado);
 	}
+	
+	/**
+	 * Executado quando o botão "Remover João" é clicado.
+	 * Remove o funcionário de nome "João" da lista de funcionários.
+	 */
+	@FXML
+	private void handleExclusaoFuncionarioJoao() {
+		Boolean isFuncionarioRemovido = this.appPrincipal.getFuncionarioService().removeFuncionarioByNome("João");
+		
+		if (! isFuncionarioRemovido) {
+			this.appPrincipal.showAlert("Atenção!", 
+					"Funcionário já removido ou inexistente.", 
+					AlertType.WARNING);
+		}
+	}
 
+	/**
+	 * Executado quando o botão "Aumentar 10%" é clicado.
+	 * Realiza o aumento de 10% no salário de todos funcionários.
+	 */
+	@FXML
+	private void handleAumentarSalario10Porcento() {
+		this.appPrincipal.getFuncionarioService().aumentarSalarioDeTodosEmPorcentagem(10D);
+		this.refreshTabelaFuncionarios();
+	}
+	
+	/**
+	 * Executado quando o botão "Exibir por Função" é clicado.
+	 * Abre uma janela exibindo uma lista de funcionário agrupados por funções.
+	 */
+	@FXML
+	private void handleExibirFuncionariosPorFuncao() {
+		this.appPrincipal.showFuncionariosListagemFuncaoDialog();
+	}
+	
+	/**
+	 * Executado quando o botão "Exibir Aniversariantes" é clicado.
+	 * Abre uma janela exibindo uma lista de funcionários que fazem aniversário
+	 * nos meses 10 e 12.
+	 */
+	@FXML
+	private void handleExibirAniversariantes() {
+		this.appPrincipal.showFuncionariosListagemAniversariantesDialog(10, 12);
+	}
 }
