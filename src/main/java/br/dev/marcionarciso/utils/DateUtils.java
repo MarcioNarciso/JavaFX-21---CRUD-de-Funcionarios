@@ -4,6 +4,7 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public abstract class DateUtils {
 	
@@ -38,5 +39,25 @@ public abstract class DateUtils {
 	 */
 	public static Boolean isDataValida(String data) {
 		return nonNull(converterDeString(data));
+	}
+	
+	/**
+	 * Calcula a diferença entre dataInicial e dataFinal em anos.
+	 * @param dataInicial
+	 * @param dataFinal
+	 * @return
+	 */
+	public static Long calcularDiferencaEmAnos(LocalDate dataInicial, LocalDate dataFinal) {
+		return ChronoUnit.YEARS.between(dataInicial, dataFinal);
+	}
+	
+	/**
+	 * Calcula a diferença entre dataInicial e dataFinal em dias.
+	 * @param dataInicial
+	 * @param dataFinal
+	 * @return
+	 */
+	public static Long calcularDiferencaEmDias(LocalDate dataInicial, LocalDate dataFinal) {
+		return ChronoUnit.DAYS.between(dataInicial, dataFinal);
 	}
 }

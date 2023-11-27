@@ -1,6 +1,7 @@
 package br.dev.marcionarciso.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 
 import br.dev.marcionarciso.model.Funcionario;
 import br.dev.marcionarciso.repository.FuncionarioRepository;
+import br.dev.marcionarciso.utils.DateUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -95,5 +97,24 @@ public class FuncionarioService {
 					return listaDeMeses.contains(funcionario.getDataNascimento().getMonthValue());
 				})
 				.collect(Collectors.toCollection(FXCollections::observableArrayList));
+	}
+
+	/**
+	 * Retorna o funcionário com a maior idade.
+	 * @return
+	 */
+	public Funcionario getFuncionarioComMaiorIdade() {
+		LocalDate dataAtual = LocalDate.now();
+		
+		return this.funcionarios
+			.stream()
+			.sorted((f1, f2) -> {
+				Long idadeF1 = DateUtils.calcularDiferencaEmDias(f1.getDataNascimento(), dataAtual);
+				Long idadeF2 = DateUtils.calcularDiferencaEmDias(f2.getDataNascimento(), dataAtual);
+				
+				return idadeF2.compareTo(idadeF1);
+			})
+			.findFirst()
+			.get();
 	}
 }

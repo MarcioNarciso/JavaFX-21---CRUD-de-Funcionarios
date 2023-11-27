@@ -1,18 +1,16 @@
 package br.dev.marcionarciso.view;
 
-import br.dev.marcionarciso.Principal;
-import br.dev.marcionarciso.model.Funcionario;
-import br.dev.marcionarciso.utils.BigDecimalUtils;
-import br.dev.marcionarciso.utils.DateUtils;
-import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
-import javafx.stage.Stage;
 import static br.dev.marcionarciso.utils.StringUtils.isEmpty;
 
 import java.math.BigDecimal;
 import java.util.Objects;
+
+import br.dev.marcionarciso.model.Funcionario;
+import br.dev.marcionarciso.utils.BigDecimalUtils;
+import br.dev.marcionarciso.utils.DateUtils;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextField;
 
 public class FuncionarioFormDialogController extends BaseDialogController {
 		

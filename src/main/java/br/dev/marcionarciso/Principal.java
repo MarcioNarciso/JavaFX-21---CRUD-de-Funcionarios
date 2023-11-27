@@ -2,11 +2,6 @@ package br.dev.marcionarciso;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 import br.dev.marcionarciso.model.Funcionario;
@@ -14,6 +9,7 @@ import br.dev.marcionarciso.service.FuncionarioService;
 import br.dev.marcionarciso.utils.FXMLLoaderFactory;
 import br.dev.marcionarciso.utils.StageFactory;
 import br.dev.marcionarciso.view.FuncionarioFormDialogController;
+import br.dev.marcionarciso.view.FuncionarioFormIdadeDialogController;
 import br.dev.marcionarciso.view.FuncionarioListagemAniversariantesDialogController;
 import br.dev.marcionarciso.view.FuncionarioListagemFuncaoDialogController;
 import br.dev.marcionarciso.view.FuncionarioOverviewController;
@@ -27,7 +23,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -174,14 +169,7 @@ public class Principal extends Application {
 			
 			dialogStage.showAndWait();
 			
-			Boolean okClicado = controller.isOkClicado();
-			
-			if (okClicado) {
-				// Atualiza a TableView de funcionários para exibir as alterações realizadas.
-				this.funcionarioOverviewController.refreshTabelaFuncionarios();
-			}
-			
-			return okClicado; 
+			return controller.isOkClicado(); 
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -263,6 +251,34 @@ public class Principal extends Application {
 			dialogStage.show();
 			
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	/**
+	 * Abre uma janela com as informações "nome" e "idade" do funcionário.
+	 */
+	public void showFuncionarioFormIdadeDialog(Funcionario funcionario) {
+		
+		try {
+			FXMLLoader fxmlLoader = FXMLLoaderFactory.create("/br/dev/marcionarciso/view/FuncionarioFormIdadeDialog.fxml");
+			AnchorPane dialogPane = fxmlLoader.load(); // Conteúdo da janela
+			
+			// Cria a nova janela como uma modal
+			Stage dialogStage = StageFactory.create(new Scene(dialogPane),
+													"Funcionário com a Maior Idade",
+													this.mainStage);
+			
+			FuncionarioFormIdadeDialogController controller = fxmlLoader.getController();
+			controller.setAppPrincipal(this);
+			controller.setDialogStage(dialogStage);
+			controller.setFuncionario(funcionario);
+			
+			// Exibe a nova janela
+			dialogStage.show();
+			
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		

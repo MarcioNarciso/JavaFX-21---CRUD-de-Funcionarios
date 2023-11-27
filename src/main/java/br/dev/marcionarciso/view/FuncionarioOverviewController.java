@@ -1,5 +1,6 @@
 package br.dev.marcionarciso.view;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Objects;
 
@@ -11,6 +12,7 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
@@ -39,6 +41,13 @@ public class FuncionarioOverviewController extends BaseDialogController{
 	 */
 	@FXML
 	private TableColumn<Funcionario, String> colunaSalariosMinimos;
+	
+	/**
+	 * Label no rodapé da janela que exibe o valor da somatória dos salários dos
+	 * funcionários.
+	 */
+	@FXML
+	private Label labelValorTotalSalarios;
 	
 	
 	/**
@@ -74,6 +83,7 @@ public class FuncionarioOverviewController extends BaseDialogController{
 	 */
 	public void setFuncionarios(ObservableList<Funcionario> funcionarios) {
 		this.tabelaFuncionarios.setItems(funcionarios);
+		this.updateValorTotalSalarios();
 	}
 	
 	/**
@@ -81,6 +91,19 @@ public class FuncionarioOverviewController extends BaseDialogController{
 	 */
 	public void refreshTabelaFuncionarios() {
 		this.tabelaFuncionarios.refresh();
+		this.updateValorTotalSalarios();
+	}
+	
+	/**
+	 * Atualiza o valor da label com o valor total do somatório dos salários.
+	 */
+	private void updateValorTotalSalarios() {
+		BigDecimal valorTotalSalarios = this.tabelaFuncionarios.getItems()
+									.stream()
+									.map(funcionario -> funcionario.getSalario())
+									.reduce(BigDecimal.ZERO, BigDecimal::add);
+		
+		this.labelValorTotalSalarios.setText("R$ "+BigDecimalUtils.formatarEmMoeda(valorTotalSalarios));
 	}
 		
 	/**
@@ -93,6 +116,7 @@ public class FuncionarioOverviewController extends BaseDialogController{
 		if (selectedIndex >= 0) {
 			// Remove o funcionário da ObservableList
 			this.tabelaFuncionarios.getItems().remove(selectedIndex);
+			this.refreshTabelaFuncionarios();
 			
 			return;
 		}
@@ -100,7 +124,6 @@ public class FuncionarioOverviewController extends BaseDialogController{
 		this.appPrincipal.showAlert("Atenção!", 
 									"Por favor, selecione um funcionário.", 
 									AlertType.WARNING);
-		
 	}
 	
 	/**
@@ -116,6 +139,7 @@ public class FuncionarioOverviewController extends BaseDialogController{
 		if (okClicado) {
 			// Adiciona o funcionário à ObservableList
 			this.appPrincipal.getDadosFuncionarios().add(f);
+			this.refreshTabelaFuncionarios();
 		}
 	}
 	
@@ -135,7 +159,12 @@ public class FuncionarioOverviewController extends BaseDialogController{
 			return;
 		}
 		
-		this.appPrincipal.showFuncionarioFormDialog(funcionarioSelecionado);
+		Boolean okClicado = this.appPrincipal.showFuncionarioFormDialog(funcionarioSelecionado);
+		
+		if (okClicado) {
+			// Atualiza a TableView de funcionários para exibir as alterações realizadas.
+			this.refreshTabelaFuncionarios();
+		}
 	}
 	
 	/**
@@ -151,6 +180,8 @@ public class FuncionarioOverviewController extends BaseDialogController{
 					"Funcionário já removido ou inexistente.", 
 					AlertType.WARNING);
 		}
+		
+		this.refreshTabelaFuncionarios();
 	}
 
 	/**
@@ -180,5 +211,16 @@ public class FuncionarioOverviewController extends BaseDialogController{
 	@FXML
 	private void handleExibirAniversariantes() {
 		this.appPrincipal.showFuncionariosListagemAniversariantesDialog(10, 12);
+	}
+	
+	/**
+	 * Executado quando o botão "Exibir Maior Idade" é clicado.
+	 * Abre uma janela com as informações "nome" e "idade" do funcionário de 
+	 * maior idade.
+	 */
+	@FXML
+	private void handleExibirFuncionarioComMaiorIdade() {
+		Funcionario funcionario = this.appPrincipal.getFuncionarioService().getFuncionarioComMaiorIdade();
+		this.appPrincipal.showFuncionarioFormIdadeDialog(funcionario);
 	}
 }

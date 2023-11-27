@@ -74,7 +74,8 @@
 	-fx-background-color: -fx-focus-color;
 }
 
-.split-pane:horizontal > .split-pane-divider {
+.split-pane:horizontal > .split-pane-divider,
+.split-pane:vertical > .split-pane-divider {
 	-fx-border-color: 
 		-fx-base-color-alt 
 		-fx-base-color 
@@ -140,3 +141,7 @@
 .button:default:hover {
 	-fx-background-color: derive(-fx-focus-color, 30%);
 }
+
+.split-pane:vertical .bottom-label {
+	-fx-font-size: 8pt;
+} 

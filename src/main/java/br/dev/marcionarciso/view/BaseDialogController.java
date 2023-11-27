@@ -4,7 +4,7 @@ import br.dev.marcionarciso.Principal;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 
-public class BaseDialogController {
+public abstract class BaseDialogController {
 
 	/**
 	 * Stage da janela controlada por esta classe.
