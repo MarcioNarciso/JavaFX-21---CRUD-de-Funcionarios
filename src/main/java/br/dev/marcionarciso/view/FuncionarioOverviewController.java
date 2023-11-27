@@ -74,18 +74,6 @@ public class FuncionarioOverviewController extends BaseDialogController{
 		});
 	}
 		
-	public void setAppPrincipal(Principal principal) {
-		this.appPrincipal = principal;
-	}
-
-	/*
-	 * Adiciona os dados da ObservableList à tabela de funcionários
-	 */
-	public void setFuncionarios(ObservableList<Funcionario> funcionarios) {
-		this.tabelaFuncionarios.setItems(funcionarios);
-		this.updateValorTotalSalarios();
-	}
-	
 	/**
 	 * Atualiza a visualização da TableView de funcionários.
 	 */
@@ -98,32 +86,40 @@ public class FuncionarioOverviewController extends BaseDialogController{
 	 * Atualiza o valor da label com o valor total do somatório dos salários.
 	 */
 	private void updateValorTotalSalarios() {
-		BigDecimal valorTotalSalarios = this.tabelaFuncionarios.getItems()
-									.stream()
-									.map(funcionario -> funcionario.getSalario())
-									.reduce(BigDecimal.ZERO, BigDecimal::add);
+		BigDecimal valorTotalSalarios = this.funcionarioService.getAll()
+						.stream()
+						.map(funcionario -> funcionario.getSalario())
+						.reduce(BigDecimal.ZERO, BigDecimal::add);
 		
 		this.labelValorTotalSalarios.setText("R$ "+BigDecimalUtils.formatarEmMoeda(valorTotalSalarios));
 	}
-		
+	
+	/**
+	 * Adiciona os dados da ObservableList à tabela de funcionários
+	 * @param funcionarios
+	 */
+	public void setFuncionarios(ObservableList<Funcionario> funcionarios) {
+		this.tabelaFuncionarios.setItems(funcionarios);	
+		this.refreshTabelaFuncionarios();
+	}
+	
 	/**
 	 * Executado quando o usuário clicar no botão "Excluir".
 	 */
 	@FXML
 	private void handleExclusaoFuncionario() {
-		int selectedIndex = this.tabelaFuncionarios.getSelectionModel().getSelectedIndex();
+		Funcionario funcionarioSelecionado = this.tabelaFuncionarios.getSelectionModel().getSelectedItem();
 		
-		if (selectedIndex >= 0) {
-			// Remove o funcionário da ObservableList
-			this.tabelaFuncionarios.getItems().remove(selectedIndex);
-			this.refreshTabelaFuncionarios();
-			
+		if (Objects.isNull(funcionarioSelecionado)) {
+			this.appPrincipal.showAlert("Atenção!", 
+										"Por favor, selecione um funcionário.", 
+										AlertType.WARNING);
 			return;
 		}
-		
-		this.appPrincipal.showAlert("Atenção!", 
-									"Por favor, selecione um funcionário.", 
-									AlertType.WARNING);
+
+		// Remove o funcionário da ObservableList
+		this.funcionarioService.remove(funcionarioSelecionado);
+		this.refreshTabelaFuncionarios();
 	}
 	
 	/**
@@ -132,13 +128,13 @@ public class FuncionarioOverviewController extends BaseDialogController{
 	 */
 	@FXML
 	private void handleNovoFuncionario() {
-		Funcionario f = new Funcionario();
+		Funcionario funcionario = new Funcionario();
 		
-		Boolean okClicado = this.appPrincipal.showFuncionarioFormDialog(f);
+		Boolean okClicado = this.appPrincipal.showFuncionarioFormDialog(funcionario);
 		
 		if (okClicado) {
 			// Adiciona o funcionário à ObservableList
-			this.appPrincipal.getDadosFuncionarios().add(f);
+			this.funcionarioService.add(funcionario);
 			this.refreshTabelaFuncionarios();
 		}
 	}
@@ -173,12 +169,12 @@ public class FuncionarioOverviewController extends BaseDialogController{
 	 */
 	@FXML
 	private void handleExclusaoFuncionarioJoao() {
-		Boolean isFuncionarioRemovido = this.appPrincipal.getFuncionarioService().removeFuncionarioByNome("João");
+		Boolean isFuncionarioRemovido = this.funcionarioService.removeFuncionarioByNome("João");
 		
 		if (! isFuncionarioRemovido) {
 			this.appPrincipal.showAlert("Atenção!", 
-					"Funcionário já removido ou inexistente.", 
-					AlertType.WARNING);
+										"Funcionário já removido ou inexistente.", 
+										AlertType.WARNING);
 		}
 		
 		this.refreshTabelaFuncionarios();
@@ -190,7 +186,7 @@ public class FuncionarioOverviewController extends BaseDialogController{
 	 */
 	@FXML
 	private void handleAumentarSalario10Porcento() {
-		this.appPrincipal.getFuncionarioService().aumentarSalarioDeTodosEmPorcentagem(10D);
+		this.funcionarioService.aumentarSalarioDeTodosEmPorcentagem(10D);
 		this.refreshTabelaFuncionarios();
 	}
 	
@@ -220,7 +216,25 @@ public class FuncionarioOverviewController extends BaseDialogController{
 	 */
 	@FXML
 	private void handleExibirFuncionarioComMaiorIdade() {
-		Funcionario funcionario = this.appPrincipal.getFuncionarioService().getFuncionarioComMaiorIdade();
+		Funcionario funcionario = this.funcionarioService.getFuncionarioComMaiorIdade();
+		
+		if (Objects.isNull(funcionario)) {
+			this.appPrincipal.showAlert("Atenção!", "Funcionário inexistente.", AlertType.WARNING);
+			return;
+		}
+		
 		this.appPrincipal.showFuncionarioFormIdadeDialog(funcionario);
 	}
+	
+	/**
+	 * Executado quando o botão "Nomes em Ordem Alfabética" é clicado.
+	 * Ordem a tabela de funcionários pelo seus nomes em ordem alfabética.
+	 */
+	@FXML
+	private void handleOrdenarNomesOrdemAlfabetica() {
+		this.funcionarioService.getFuncionariosNomesOrdemAlfabetica(true);
+		this.refreshTabelaFuncionarios();
+	}
+
+
 }

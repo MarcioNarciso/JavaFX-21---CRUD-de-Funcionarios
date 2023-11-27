@@ -38,6 +38,7 @@
 	-fx-table-cell-border-color: -fx-base-color-alt;
 	-fx-table-header-border-color: -fx-base-color-alt;
 	-fx-padding: 5;
+	-fx-border-insets: 0;
 }
 
 .table-view .column-header-background,
@@ -81,11 +82,16 @@
 		-fx-base-color 
 		-fx-base-color-alt 
 		-fx-base-color;
-	-fx-background-color: -fx-base-color-alt, derive(-fx-base-color, 80%);
+	-fx-border-width: 0;
+	/* Remove a linha do divider */
+	-fx-background-color: -fx-base-color-alt; 
+	-fx-padding: 0;
 }
 
 .split-pane {
-	-fx-padding: 1 0 0 0;
+	-fx-padding: 0 0 0 0;
+	-fx-border-insets: 0;
+	-fx-background-insets: 0, 0 0 0 0;
 }
 
 .text-field {

@@ -95,7 +95,7 @@
                               <Tooltip text="Exibe o funcionário com a maior idade." />
                            </tooltip>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="24.0" prefWidth="206.0" text="Ordem Alfabética" GridPane.rowIndex="5">
+                        <Button mnemonicParsing="false" onAction="#handleOrdenarNomesOrdemAlfabetica" prefHeight="24.0" prefWidth="206.0" text="Nomes em Ordem Alfabética" GridPane.rowIndex="5">
                            <tooltip>
                               <Tooltip text="Exibe os funcionários em ordem alfabética." />
                            </tooltip>

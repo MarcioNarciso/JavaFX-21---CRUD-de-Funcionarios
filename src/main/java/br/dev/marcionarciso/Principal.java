@@ -41,28 +41,16 @@ public class Principal extends Application {
 	private FuncionarioOverviewController funcionarioOverviewController;
 	
 	/**
-	 * Service que lida com a persistência dos funcionários.
+	 * Service que lida com a coleção dos funcionários.
+	 * Os dados virão deste serviço.
 	 */
 	private FuncionarioService funcionarioService;
-	
-	/**
-	 * Dados dos funcionários como uma ObservableList.
-	 */
-	private ObservableList<Funcionario> dadosFuncionarios = FXCollections.observableArrayList();
 	
 	/**
 	 * Construtor
 	 */
 	public Principal() {
-		try {
-			this.funcionarioService = new FuncionarioService();
-			 /**
-		     * Busca os funcionários e os insere na ObservableList.
-		     */
-			this.dadosFuncionarios = this.funcionarioService.getAll();	
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		this.funcionarioService = new FuncionarioService();
 	}
 	
 	/**
@@ -71,14 +59,6 @@ public class Principal extends Application {
      */
     public Stage getMainStage() {
 		return this.mainStage;
-	}
-    
-    /**
-     * Retorna os funcionários como uma ObservableList.
-     * @return
-     */
-    public ObservableList<Funcionario> getDadosFuncionarios() {
-		return this.dadosFuncionarios;
 	}
     
     public FuncionarioService getFuncionarioService() {
@@ -130,7 +110,8 @@ public class Principal extends Application {
     		 * funcionários.
     		 */
     		this.funcionarioOverviewController.setAppPrincipal(this);
-    		this.funcionarioOverviewController.setFuncionarios(this.getDadosFuncionarios());
+    		this.funcionarioOverviewController.setFuncionarioService(this.funcionarioService);
+    		this.funcionarioOverviewController.setFuncionarios(this.funcionarioService.getAll());
 
     	} catch (Exception e) {
 			e.printStackTrace();
@@ -151,9 +132,8 @@ public class Principal extends Application {
 		
 		try {
 			// Carrega o arquivo FXML e cria o seu painel 
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/br/dev/marcionarciso/view/FuncionarioFormDialog.fxml"));
-			AnchorPane dialogPane = (AnchorPane) loader.load();
+			FXMLLoader fxmlLoader = FXMLLoaderFactory.create("/br/dev/marcionarciso/view/FuncionarioFormDialog.fxml");
+			AnchorPane dialogPane = (AnchorPane) fxmlLoader.load();
 			
 			// Cria a nova janela que será uma modal
 			Stage dialogStage = StageFactory.create(new Scene(dialogPane), // Cria uma nova cena com o conteúdo que deve ser exibido na nova janela
@@ -161,7 +141,7 @@ public class Principal extends Application {
 													this.mainStage); // Define a janela principal como "dona" da nova janela
 			
 			// Busca a controller do formulário
-			FuncionarioFormDialogController	controller = loader.getController();
+			FuncionarioFormDialogController	controller = fxmlLoader.getController();
 			// Passa as informações do formulário para a controller
 			controller.setDialogStage(dialogStage);
 			controller.setFuncionario(funcionario);
@@ -199,9 +179,7 @@ public class Principal extends Application {
 	public void showFuncionariosListagemFuncaoDialog() {
 
 		try {
-			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(getClass().getResource("/br/dev/marcionarciso/view/FuncionarioListagemFuncaoDialog.fxml"));
-			
+			FXMLLoader fxmlLoader = FXMLLoaderFactory.create("/br/dev/marcionarciso/view/FuncionarioListagemFuncaoDialog.fxml");
 			// Carrega o painel que é o conteúdo da nova janela
 			AnchorPane dialogPane = (AnchorPane) fxmlLoader.load();
 			

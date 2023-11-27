@@ -40,11 +40,12 @@ public class FuncionarioListagemFuncaoDialogController extends BaseDialogControl
 		initTabelaFuncionarios();
 	}
 	
+	/**
+	 * Define qual propriedade de Funcionario está em qual coluna e
+	 * realiza algumas tratativas nos valores das células. 
+	 */
 	private void initTabelaFuncionarios() {
-		/*
-		 * Define qual propriedade de Funcionario está em qual coluna e
-		 * realiza algumas tratativas nos valores das células. 
-		 */
+
 		this.colunaNome.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getValue().getNome()));
 		
 		this.colunaDataNascimento.setCellValueFactory(cellData -> {

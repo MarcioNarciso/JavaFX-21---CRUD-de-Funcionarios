@@ -20,16 +20,21 @@ import javafx.collections.ObservableList;
 public class FuncionarioService {
 	
 	private FuncionarioRepository repository;
-	private ObservableList<Funcionario> funcionarios;
 	
-	public FuncionarioService() throws Exception {
+	public FuncionarioService() {
 		this.repository = new FuncionarioRepository();
-		// Converte a List de funcionários vinda do repositório em uma ObservableList
-		this.funcionarios = FXCollections.observableArrayList(this.repository.getAll());
+	}
+	
+	public Boolean add(Funcionario f) {
+		return this.repository.add(f);
+	}
+	
+	public Boolean remove(Funcionario f) {
+		return this.repository.remove(f);
 	}
 
 	public ObservableList<Funcionario> getAll() {
-		return this.funcionarios;
+		return this.repository.getAll();
 	}
 	
 	/**
@@ -38,7 +43,8 @@ public class FuncionarioService {
 	 * @return
 	 */
 	public Boolean removeFuncionarioByNome(String nome){
-		return this.funcionarios.removeIf(funcionario -> funcionario.getNome().trim().equals(nome.trim()));
+		return this.repository.getAll()
+				.removeIf(funcionario -> funcionario.getNome().trim().equals(nome.trim()));
 	}
 	
 	/**
@@ -48,7 +54,7 @@ public class FuncionarioService {
 	public void aumentarSalarioDeTodosEmPorcentagem(Double porcentagem) {
 		BigDecimal porcentagemConvertida = new BigDecimal((porcentagem / 100) + 1);
 		
-		this.funcionarios.stream()
+		this.repository.getAll()
 			.forEach(funcionario -> {
 				funcionario.setSalario(funcionario.getSalario().multiply(porcentagemConvertida));
 			});
@@ -62,7 +68,7 @@ public class FuncionarioService {
 	public Map<String, List<Funcionario>> getFuncionariosAgrupadosPorFuncao() {
 		Map<String, List<Funcionario>> funcionariosAgrupados = new HashMap();
 		
-		this.funcionarios
+		this.repository.getAll()
 			.forEach(funcionario -> {
 				String funcao = funcionario.getFuncao();
 				
@@ -91,7 +97,7 @@ public class FuncionarioService {
 	public ObservableList<Funcionario> getFuncionariosByMesNascimento(Integer...meses) {
 		List listaDeMeses = Arrays.asList(meses);
 		
-		return this.funcionarios
+		return this.repository.getAll()
 				.stream()
 				.filter(funcionario -> {
 					return listaDeMeses.contains(funcionario.getDataNascimento().getMonthValue());
@@ -106,7 +112,7 @@ public class FuncionarioService {
 	public Funcionario getFuncionarioComMaiorIdade() {
 		LocalDate dataAtual = LocalDate.now();
 		
-		return this.funcionarios
+		return this.repository.getAll()
 			.stream()
 			.sorted((f1, f2) -> {
 				Long idadeF1 = DateUtils.calcularDiferencaEmDias(f1.getDataNascimento(), dataAtual);
@@ -115,6 +121,25 @@ public class FuncionarioService {
 				return idadeF2.compareTo(idadeF1);
 			})
 			.findFirst()
-			.get();
+			.orElse(null);
+	}
+	
+	public void getFuncionariosNomesOrdemAlfabetica(Boolean isCrescente) {
+		final Boolean isOrdemCrescente = Objects.isNull(isCrescente) ? true : isCrescente;
+		
+		/**
+		 * Utilizei o método sort de List porque ele ele reordena a própria lista.
+		 * O método sorted de Stream cria uma lista nova reordenada, o que 
+		 * estava ocasionando a perda da vantagem da ObservableList.
+		 */
+		
+		this.repository.getAll()
+			.sort((f1, f2) -> {
+				if (isOrdemCrescente) {
+					return f1.getNome().compareTo(f2.getNome());
+				} else {
+					return f2.getNome().compareTo(f1.getNome());
+				}
+			});
 	}
 }
