@@ -13,7 +13,7 @@ Esse projeto assume que o Java esteja devidamente instalado na máquina e com a 
 3. Navegue até pasta raiz do projeto.
 4. Se estiver no **Windows**, execute o arquivo **"run.cmd"**. Se estiver no **Linux**, execute o arquivo **"run.sh"**.
 
-## Prints da Aplicação
+## Telas da Aplicação
 
 ![Tela Inicial](prints/tela-inicial.png)
 
