@@ -4,6 +4,9 @@
     <groupId>br.dev.marcionarciso</groupId>
     <artifactId>crud-funcionario</artifactId>
     <version>1.0.0</version>
+	
+	<packaging>jar</packaging>    
+  
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
@@ -54,7 +57,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>br.dev.marcionarciso.Principal</mainClass>
+                    <mainClass>br.dev.marcionarciso.App</mainClass>
                     
                     <!-- 
                     	Configurações adicionais para a criação da runtime image 
@@ -72,7 +75,7 @@
                     <!-- O nome da pasta com a runtime image resultante. -->
                     <jlinkImageName>executavel</jlinkImageName>
                     <!-- Cria um "zip" da runtime image resultante. -->
-                    <jlinkZipName>executavel-zip</jlinkZipName>
+                    <!--<jlinkZipName>executavel-zip</jlinkZipName>-->
                 </configuration>
             </plugin>
         </plugins>
