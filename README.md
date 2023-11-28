@@ -8,9 +8,10 @@ Esse projeto assume que o Java esteja devidamente instalado na máquina e com a 
 
 ### Execução
 
-1. Clone o projeto via Git ou simplesmente faça o download pelo GitHub.  
-2. Navegue até pasta raiz do projeto.
-3. Se estiver no **Windows**, execute o arquivo **"run.cmd"**. Se estiver no **Linux**, execute o arquivo **"run.sh"**.
+1. Clone o projeto via Git ou simplesmente faça o download pelo GitHub.
+2. Descompacte o projeto do arquivo ".zip".
+3. Navegue até pasta raiz do projeto.
+4. Se estiver no **Windows**, execute o arquivo **"run.cmd"**. Se estiver no **Linux**, execute o arquivo **"run.sh"**.
 
 ## Prints da Aplicação
 
